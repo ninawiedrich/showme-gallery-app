@@ -1,0 +1,31 @@
+/* Profile.css */
+
+.avatar-placeholder {
+  width: 100px;
+  height: 100px;
+  background-color: #ccc;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+}
+
+.profile-container {
+  margin-top: 20px;
+}
+
+.profile-photo-upload-form,
+.profile-photo-gallery {
+  margin-top: 30px;
+}
+
+.profile-photo-gallery .card {
+  transition: transform 0.2s ease-in-out;
+}
+
+.profile-photo-gallery .card:hover {
+  transform: scale(1.05);
+}
+
