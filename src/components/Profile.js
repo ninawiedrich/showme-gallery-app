@@ -8,6 +8,7 @@ const Profile = () => {
   const [user, setUser] = useState({});
   const [photoFile, setPhotoFile] = useState(null);
   const [tag, setTag] = useState('');
+  const [category, setCategory] = useState('');
   const [userPhotos, setUserPhotos] = useState([]);
   const [error, setError] = useState('');
   const [showModal, setShowModal] = useState(false);
@@ -53,10 +54,12 @@ const Profile = () => {
           userId: auth.currentUser.uid,
           url: photoUrl,
           tag,
+          category,
           shared: false
         });
         setPhotoFile(null);
         setTag('');
+        setCategory('');
       } catch (error) {
         setError(error.message);
       }
@@ -103,6 +106,16 @@ const Profile = () => {
         <Form.Group controlId="photo-tag">
           <Form.Label>Tag</Form.Label>
           <Form.Control type="text" value={tag} onChange={(e) => setTag(e.target.value)} />
+        </Form.Group>
+        <Form.Group controlId="photo-category">
+          <Form.Label>Category</Form.Label>
+          <Form.Control as="select" value={category} onChange={(e) => setCategory(e.target.value)}>
+            <option value="">Select a category</option>
+            <option value="Nature">Nature</option>
+            <option value="Animals">Animals</option>
+            <option value="People">People</option>
+            {/* Add more categories as needed */}
+          </Form.Control>
         </Form.Group>
         <Button onClick={handlePhotoUpload}>Upload Photo</Button>
       </Form>

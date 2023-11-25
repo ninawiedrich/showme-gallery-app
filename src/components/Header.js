@@ -1,8 +1,8 @@
 import React from 'react';
 import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../useAuth'; // Adjust the path as necessary
-import logo from '../images/logo.png'; // Adjust the path to your logo
+import { useAuth } from '../useAuth'; 
+import logo from '../images/logo.png'; 
 
 const Header = () => {
   const { currentUser, signOutUser } = useAuth();
