@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Button, Card, Alert, Row, Col, Modal, Form, Image } from 'react-bootstrap';
+import { Container, Row, Col, Card, Modal, Image, Alert, Button, Form } from 'react-bootstrap';
 import { storage, db, auth } from '../firebase-config';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { doc, getDoc, updateDoc, collection, addDoc, query, where, onSnapshot, deleteDoc } from 'firebase/firestore';
@@ -12,6 +12,8 @@ const Profile = () => {
   const [userPhotos, setUserPhotos] = useState([]);
   const [error, setError] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [selectedImageUrl, setSelectedImageUrl] = useState('');
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -82,19 +84,24 @@ const Profile = () => {
     await updateDoc(photoDocRef, { shared: !shared });
   };
 
+  const openImageModal = (imageUrl) => {
+    setSelectedImageUrl(imageUrl);
+    setShowImageModal(true);
+  };
+
   return (
     <Container>
       <h1>My Profile</h1>
       {error && <Alert variant="danger">{error}</Alert>}
       <div className="text-center mb-4">
         <Image
-          src={user.avatar || 'default-avatar-url'}
+          src={user.avatar || 'https://via.placeholder.com/150'}
           alt="Profile Avatar"
           roundedCircle
           style={{ width: '150px', height: '150px', objectFit: 'cover' }}
         />
         <h2>{user.username || 'Your Name'}</h2>
-        <p>{user.bio}</p>
+        <p>{user.bio || 'Your bio here'}</p>
         <Button variant="primary" onClick={() => setShowModal(true)}>Edit Profile</Button>
       </div>
 
@@ -114,43 +121,41 @@ const Profile = () => {
             <option value="Nature">Nature</option>
             <option value="Animals">Animals</option>
             <option value="People">People</option>
-            {/* Add more categories as needed */}
           </Form.Control>
         </Form.Group>
-        <Button onClick={handlePhotoUpload}>Upload Photo</Button>
+        <Button variant="primary" onClick={handlePhotoUpload}>Upload Photo</Button>
       </Form>
 
       <Row xs={1} md={3} className="g-4 mt-3">
         {userPhotos.map(photo => (
-          <Col key={photo.id}>
-            <Card>
-              <Card.Img variant="top" src={photo.url} />
+          <Col key={photo.id} className="mb-3">
+            <Card className="h-100">
+              <Card.Img variant="top" src={photo.url} onClick={() => openImageModal(photo.url)} style={{ height: '200px', objectFit: 'cover' }} />
               <Card.Body>
                 <Card.Title>{photo.tag}</Card.Title>
-                <Button variant="danger" onClick={() => handleDeletePhoto(photo.id, photo.url)}>Delete</Button>
-                <Button 
-                  variant={photo.shared ? "success" : "secondary"} 
-                  onClick={() => togglePhotoShare(photo.id, photo.shared)}>
+                <Button variant="secondary" onClick={() => togglePhotoShare(photo.id, photo.shared)}>
                   {photo.shared ? "Unshare" : "Share"}
                 </Button>
+                <Button variant="danger" onClick={() => handleDeletePhoto(photo.id, photo.url)}>Delete</Button>
               </Card.Body>
             </Card>
           </Col>
         ))}
       </Row>
 
-      <ProfileUpdateModal
-        show={showModal}
-        handleClose={() => setShowModal(false)}
-        user={user}
-        handleProfileUpdate={handleProfileUpdate}
-      />
+      <Modal show={showImageModal} onHide={() => setShowImageModal(false)} size="lg">
+        <Modal.Body>
+          <img src={selectedImageUrl} style={{ width: '100%' }} alt="Full Size" />
+        </Modal.Body>
+      </Modal>
+
+      <ProfileUpdateModal show={showModal} handleClose={() => setShowModal(false)} user={user} handleProfileUpdate={handleProfileUpdate} />
     </Container>
   );
 };
 
 const ProfileUpdateModal = ({ show, handleClose, user, handleProfileUpdate }) => {
-  const [updatedUser, setUpdatedUser] = useState({ ...user });
+  const [updatedUser, setUpdatedUser] = useState(user);
 
   useEffect(() => {
     setUpdatedUser(user);
@@ -158,6 +163,7 @@ const ProfileUpdateModal = ({ show, handleClose, user, handleProfileUpdate }) =>
 
   const onSubmit = () => {
     handleProfileUpdate(updatedUser);
+    handleClose();
   };
 
   const handleFileChange = (event) => {
@@ -178,22 +184,11 @@ const ProfileUpdateModal = ({ show, handleClose, user, handleProfileUpdate }) =>
         <Form>
           <Form.Group controlId="username">
             <Form.Label>Username</Form.Label>
-            <Form.Control
-              type="text"
-              name="username"
-              value={updatedUser.username || ''}
-              onChange={handleChange}
-            />
+            <Form.Control type="text" name="username" value={updatedUser.username || ''} onChange={handleChange} />
           </Form.Group>
           <Form.Group controlId="bio">
             <Form.Label>Bio</Form.Label>
-            <Form.Control
-              as="textarea"
-              name="bio"
-              rows={3}
-              value={updatedUser.bio || ''}
-              onChange={handleChange}
-            />
+            <Form.Control as="textarea" name="bio" rows={3} value={updatedUser.bio || ''} onChange={handleChange} />
           </Form.Group>
           <Form.Group controlId="avatar">
             <Form.Label>Avatar</Form.Label>
