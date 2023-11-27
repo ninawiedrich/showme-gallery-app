@@ -15,9 +15,10 @@ export function useAuth() {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, user => {
+      console.log("Logged in user:", user); // Add this line for debugging
       setCurrentUser(user);
     });
-    return unsubscribe; // unsubscribe on unmount
+    return unsubscribe;
   }, []);
 
   // Email/Password sign-up

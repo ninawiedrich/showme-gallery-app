@@ -13,18 +13,13 @@ function App() {
 
   return (
     <Router>
-      <Header /> {/* Header is now outside of Routes and will always render */}
+      <Header />
       <Routes>
-        {/* Public Routes */}
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/gallery" element={<PublicGallery />} />
-
-        {/* Protected Routes */}
         {currentUser && <Route path="/profile" element={<Profile />} />}
-
-        {/* Default Route */}
-        <Route path="/" element={currentUser ? <PublicGallery /> : <SignIn />} />
+        <Route path="/" element={currentUser ? <Profile /> : <SignIn />} />
       </Routes>
     </Router>
   );
