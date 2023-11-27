@@ -203,5 +203,4 @@ const ProfileUpdateModal = ({ show, handleClose, user, handleProfileUpdate }) =>
     </Modal>
   );
 };
-
 export default Profile;
