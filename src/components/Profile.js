@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Modal, Image, Alert, Button, Form } from 're
 import { storage, db, auth } from '../firebase-config';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { doc, getDoc, updateDoc, collection, addDoc, query, where, onSnapshot, deleteDoc } from 'firebase/firestore';
+import Resizer from 'react-image-file-resizer';
 
 const Profile = () => {
   const [user, setUser] = useState({});
@@ -46,11 +47,27 @@ const Profile = () => {
     setShowModal(false);
   };
 
+  const resizeFile = (file) => new Promise(resolve => {
+    Resizer.imageFileResizer(
+      file,
+      300, // max width
+      300, // max height
+      'JPEG',
+      300, // quality
+      0, // rotation
+      uri => {
+        resolve(uri);
+      },
+      'blob'
+    );
+  });
+
   const handlePhotoUpload = async () => {
     if (photoFile && tag) {
-      const photoRef = ref(storage, `photos/${auth.currentUser.uid}/${photoFile.name}`);
       try {
-        const snapshot = await uploadBytes(photoRef, photoFile);
+        const resizedImage = await resizeFile(photoFile);
+        const photoRef = ref(storage, `photos/${auth.currentUser.uid}/${photoFile.name}`);
+        const snapshot = await uploadBytes(photoRef, resizedImage);
         const photoUrl = await getDownloadURL(snapshot.ref);
         await addDoc(collection(db, 'photos'), {
           userId: auth.currentUser.uid,
@@ -203,4 +220,5 @@ const ProfileUpdateModal = ({ show, handleClose, user, handleProfileUpdate }) =>
     </Modal>
   );
 };
+
 export default Profile;

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Form, Button, Modal } from 'react-bootstrap';
+import { Container, Modal, Form, Row, Col } from 'react-bootstrap';
 import { db } from '../firebase-config';
 import { collection, query, where, onSnapshot, doc, getDoc } from 'firebase/firestore';
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 
 const PublicGallery = () => {
     const [sharedPhotos, setSharedPhotos] = useState([]);
@@ -24,7 +26,6 @@ const PublicGallery = () => {
             });
             setSharedPhotos(photos);
 
-            // Fetch user data for displayed photos
             let userMap = {};
             for (let userId of userIds) {
                 const userDocRef = doc(db, 'users', userId);
@@ -52,52 +53,66 @@ const PublicGallery = () => {
                (filterUsername ? usernames[photo.userId]?.toLowerCase().includes(filterUsername.toLowerCase()) : true);
     });
 
+    const responsive = {
+      desktop: {
+          breakpoint: { max: 3000, min: 1024 },
+          items: 3
+      },
+      tablet: {
+          breakpoint: { max: 1024, min: 464 },
+          items: 2
+      },
+      mobile: {
+          breakpoint: { max: 464, min: 0 },
+          items: 1
+      }
+    };
+
     return (
         <Container>
             <h1>Public Gallery</h1>
             <Row className="mb-4">
-                <Col>
-                    <Form.Control
-                        as="select"
-                        value={filterCategory}
-                        onChange={(e) => setFilterCategory(e.target.value)}
-                    >
-                        <option value="">All Categories</option>
-                        <option value="Nature">Nature</option>
-                        <option value="Animals">Animals</option>
-                        <option value="People">People</option>
-                    </Form.Control>
-                </Col>
-                <Col>
-                    <Form.Control
-                        type="text"
-                        placeholder="Search by tag"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                </Col>
-                <Col>
-                    <Form.Control
-                        type="text"
-                        placeholder="Search by username"
-                        value={filterUsername}
-                        onChange={(e) => setFilterUsername(e.target.value)}
-                    />
-                </Col>
+                {/* Filters */}
+                {/* ... */}
             </Row>
-            <Row xs={1} md={3} className="g-4">
+            <Carousel
+                swipeable={true}
+                draggable={true}
+                showDots={true}
+                responsive={responsive}
+                ssr={true} // means to render carousel on server-side.
+                infinite={true}
+                autoPlay={false}
+                keyBoardControl={true}
+                customTransition="all .5s"
+                transitionDuration={500}
+                containerClass="carousel-container"
+                removeArrowOnDeviceType={["tablet", "mobile"]}
+                itemClass="carousel-item-padding-40-px"
+            >
                 {filteredPhotos.map((photo) => (
-                    <Col key={photo.id}>
-                        <Card>
-                            <Card.Img variant="top" src={photo.url} />
-                            <Card.Body>
-                                <Card.Title>{photo.tag}</Card.Title>
-                                <p>Uploaded by: <Button variant="link" onClick={() => handleUserNameClick(photo.userId)}>{usernames[photo.userId]}</Button></p>
-                            </Card.Body>
-                        </Card>
-                    </Col>
+       <div key={photo.id} style={{ textAlign: 'center', height: '50vh' }}> {/* Set the height to 50vh here */}
+       <img
+           src={photo.url}
+           alt={photo.tag}
+           style={{ 
+               maxHeight: '100vh', // Set the max height to 50vh
+               maxWidth: '100%', // Make sure the image is not wider than the container
+               height: 'auto', // Maintain the aspect ratio
+               width: 'auto', // Maintain the aspect ratio
+               display: 'inline-block', 
+               margin: '0 auto' 
+           }}
+       />
+       <div style={{ textAlign: 'center' }}>
+           <h5>{photo.tag}</h5>
+           <p onClick={() => handleUserNameClick(photo.userId)}>
+               Uploaded by: {usernames[photo.userId] || 'Unknown'}
+           </p>
+       </div>
+   </div>
                 ))}
-            </Row>
+            </Carousel>
             <Modal show={showBioModal} onHide={() => setShowBioModal(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>User Bio</Modal.Title>
