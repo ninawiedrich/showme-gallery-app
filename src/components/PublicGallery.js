@@ -145,7 +145,7 @@ const PublicGallery = () => {
             <Modal style={{ color: '#000', textAlign: 'center' }} show={showBioModal} onHide={() => setShowBioModal(false)}>
             <Modal.Header closeButton>
   <div style={{ width: '100%', textAlign: 'center' }}>
-    <Modal.Title>{selectedUser.username}</Modal.Title>
+    {selectedUser && <Modal.Title>{selectedUser.username}</Modal.Title>}
   </div>
 </Modal.Header>
 
