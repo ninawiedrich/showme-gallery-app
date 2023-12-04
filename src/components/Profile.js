@@ -4,6 +4,7 @@ import { storage, db, auth } from '../firebase-config';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { doc, getDoc, updateDoc, collection, addDoc, query, where, onSnapshot, deleteDoc } from 'firebase/firestore';
 import Resizer from 'react-image-file-resizer';
+import './Profile.css';
 
 const Profile = () => {
   const [user, setUser] = useState({});
@@ -53,7 +54,7 @@ const Profile = () => {
       300, // max width
       300, // max height
       'JPEG',
-      300, // quality
+      100, // quality
       0, // rotation
       uri => {
         resolve(uri);
@@ -110,39 +111,41 @@ const Profile = () => {
     <Container>
       <h1>My Profile</h1>
       {error && <Alert variant="danger">{error}</Alert>}
-      <div className="text-center mb-4">
-        <Image
-          src={user.avatar || 'https://via.placeholder.com/150'}
-          alt="Profile Avatar"
-          roundedCircle
-          style={{ width: '150px', height: '150px', objectFit: 'cover' }}
-        />
-        <h2>{user.username || 'Your Name'}</h2>
-        <p>{user.bio || 'Your bio here'}</p>
-        <Button variant="primary" onClick={() => setShowModal(true)}>Edit Profile</Button>
-      </div>
-
-      <Form>
-        <Form.Group controlId="photo-upload">
-          <Form.Label>Upload New Photo</Form.Label>
-          <Form.Control type="file" onChange={(e) => setPhotoFile(e.target.files[0])} />
-        </Form.Group>
-        <Form.Group controlId="photo-tag">
-          <Form.Label>Tag</Form.Label>
-          <Form.Control type="text" value={tag} onChange={(e) => setTag(e.target.value)} />
-        </Form.Group>
-        <Form.Group controlId="photo-category">
-          <Form.Label>Category</Form.Label>
-          <Form.Control as="select" value={category} onChange={(e) => setCategory(e.target.value)}>
-            <option value="">Select a category</option>
-            <option value="Nature">Nature</option>
-            <option value="Animals">Animals</option>
-            <option value="People">People</option>
-          </Form.Control>
-        </Form.Group>
-        <Button variant="primary" onClick={handlePhotoUpload}>Upload Photo</Button>
-      </Form>
-
+      <Row>
+        <Col md={6}>
+          <Form>
+            <Form.Group controlId="photo-upload">
+              <Form.Label>Upload New Photo</Form.Label>
+              <Form.Control type="file" onChange={(e) => setPhotoFile(e.target.files[0])} />
+            </Form.Group>
+            <Form.Group controlId="photo-tag">
+              <Form.Label>Tag</Form.Label>
+              <Form.Control type="text" value={tag} onChange={(e) => setTag(e.target.value)} />
+            </Form.Group>
+            <Form.Group controlId="photo-category">
+              <Form.Label>Category</Form.Label>
+              <Form.Control as="select" value={category} onChange={(e) => setCategory(e.target.value)}>
+                <option value="">Select a category</option>
+                <option value="Nature">Nature</option>
+                <option value="Animals">Animals</option>
+                <option value="People">People</option>
+              </Form.Control>
+            </Form.Group>
+            <Button variant="primary" onClick={handlePhotoUpload}>Upload Photo</Button>
+          </Form>
+        </Col>
+        <Col md={6} className="text-center">
+          <Image
+            src={user.avatar || 'https://via.placeholder.com/150'}
+            alt="Profile Avatar"
+            roundedCircle
+            style={{ width: '150px', height: '150px', objectFit: 'cover' }}
+          />
+          <h2>{user.username || 'Your Name'}</h2>
+          <p>{user.bio || 'Your bio here'}</p>
+          <Button variant="primary" onClick={() => setShowModal(true)}>Edit Profile</Button>
+        </Col>
+      </Row>
       <Row xs={1} md={3} className="g-4 mt-3">
         {userPhotos.map(photo => (
           <Col key={photo.id} className="mb-3">
@@ -159,13 +162,11 @@ const Profile = () => {
           </Col>
         ))}
       </Row>
-
       <Modal show={showImageModal} onHide={() => setShowImageModal(false)} size="lg">
         <Modal.Body>
           <img src={selectedImageUrl} style={{ width: '100%' }} alt="Full Size" />
         </Modal.Body>
       </Modal>
-
       <ProfileUpdateModal show={showModal} handleClose={() => setShowModal(false)} user={user} handleProfileUpdate={handleProfileUpdate} />
     </Container>
   );
