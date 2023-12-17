@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Modal, Form, Row, Col } from 'react-bootstrap';
+import { Container, Modal } from 'react-bootstrap';
 import { db } from '../firebase-config';
 import { collection, query, where, onSnapshot, doc, getDoc } from 'firebase/firestore';
 import Carousel from 'react-multi-carousel';
@@ -9,11 +9,10 @@ import './PublicGallery.css';
 const PublicGallery = () => {
     const [sharedPhotos, setSharedPhotos] = useState([]);
     const [usernames, setUsernames] = useState({});
-    const [filterCategory, setFilterCategory] = useState('');
-    const [searchTerm, setSearchTerm] = useState('');
-    const [filterUsername, setFilterUsername] = useState('');
     const [showBioModal, setShowBioModal] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
+    const [showImageModal, setShowImageModal] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(null);
 
     useEffect(() => {
         const photosRef = collection(db, 'photos');
@@ -43,20 +42,15 @@ const PublicGallery = () => {
         const userDocRef = doc(db, 'users', userId);
         const userDocSnap = await getDoc(userDocRef);
         if (userDocSnap.exists()) {
-          console.log("Fetched User Data:", userDocSnap.data());
             setSelectedUser(userDocSnap.data());
             setShowBioModal(true);
         }
     };
 
-    const applyFilters = photo => {
-        const matchesCategory = filterCategory ? photo.category === filterCategory : true;
-        const matchesTag = searchTerm ? photo.tag.toLowerCase().includes(searchTerm.toLowerCase()) : true;
-        const matchesUsername = filterUsername ? usernames[photo.userId]?.toLowerCase().includes(filterUsername.toLowerCase()) : true;
-        return matchesCategory && matchesTag && matchesUsername;
+    const openImageModal = (photo) => {
+        setSelectedImage(photo.url);
+        setShowImageModal(true);
     };
-
-    const filteredPhotos = sharedPhotos.filter(applyFilters);
 
     const responsive = {
         desktop: {
@@ -65,11 +59,11 @@ const PublicGallery = () => {
         },
         tablet: {
             breakpoint: { max: 1024, min: 464 },
-            items: 3 
+            items: 3
         },
         mobile: {
             breakpoint: { max: 464, min: 0 },
-            items: 1 
+            items: 1
         }
     };
 
@@ -78,37 +72,6 @@ const PublicGallery = () => {
             <div className="gallery-header">
                 <h1>Public Gallery</h1>
             </div>
-            <Row className="gallery-filter-row">
-                <Col>
-                    <Form.Control
-                        as="select"
-                        value={filterCategory}
-                        onChange={(e) => setFilterCategory(e.target.value)}
-                    >
-                        <option value="">All Categories</option>
-                        <option value="Nature">Nature</option>
-                        <option value="Animals">Animals</option>
-                        <option value="People">People</option>
-                        <option value="Technology">Technology</option>
-                    </Form.Control>
-                </Col>
-                <Col>
-                    <Form.Control
-                        type="text"
-                        placeholder="Search by tag"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                </Col>
-                <Col>
-                    <Form.Control
-                        type="text"
-                        placeholder="Search by username"
-                        value={filterUsername}
-                        onChange={(e) => setFilterUsername(e.target.value)}
-                    />
-                </Col>
-            </Row>
             <div className="gallery-container">
                 <Carousel
                     swipeable={true}
@@ -119,14 +82,14 @@ const PublicGallery = () => {
                     infinite={true}
                     autoPlay={false}
                     keyBoardControl={true}
-                    customTransition="all .5s"
+                    customTransition="all .5"
                     transitionDuration={500}
                     containerClass="carousel-container"
                     removeArrowOnDeviceType={["tablet", "mobile"]}
                     itemClass="carousel-item-padding-40-px"
                 >
-                    {filteredPhotos.map((photo) => (
-                        <div key={photo.id} style={{ textAlign: 'center', height: '50vh' }}>
+                    {sharedPhotos.map((photo) => (
+                        <div key={photo.id} className="photo-container" onClick={() => openImageModal(photo)}>
                             <img
                                 src={photo.url}
                                 alt={photo.tag}
@@ -142,30 +105,11 @@ const PublicGallery = () => {
                     ))}
                 </Carousel>
             </div>
-            <Modal style={{ color: '#000', textAlign: 'center' }} show={showBioModal} onHide={() => setShowBioModal(false)}>
-            <Modal.Header closeButton>
-  <div style={{ width: '100%', textAlign: 'center' }}>
-    {selectedUser && <Modal.Title>{selectedUser.username}</Modal.Title>}
-  </div>
-</Modal.Header>
-
-    <Modal.Body>
-        {selectedUser ? (
-            <>
-                {selectedUser.avatar && (
-                    <img 
-                        src={selectedUser.avatar} 
-                        alt="Avatar" 
-                        style={{ width: '150px', height: '150px', objectFit: 'cover', borderRadius: '50%' }} 
-                    />
-                )}
-                <p>{selectedUser.bio}</p>
-            </>
-        ) : (
-            <p>Loading...</p>
-        )}
-    </Modal.Body>
-</Modal>
+            <Modal show={showImageModal} onHide={() => setShowImageModal(false)} size="lg" centered>
+                <Modal.Body>
+                    {selectedImage && <img src={selectedImage} alt="Full Size" style={{ width: '100%' }} />}
+                </Modal.Body>
+            </Modal>
         </Container>
     );
 };

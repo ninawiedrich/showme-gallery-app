@@ -10,15 +10,6 @@
   color: white;
 }
 
-.profile-container {
-  margin-top: 20px;
-}
-
-.profile-photo-upload-form,
-.profile-photo-gallery {
-  margin-top: 30px;
-}
-
 .profile-photo-gallery .card {
   transition: transform 0.2s ease-in-out;
 }
@@ -27,3 +18,69 @@
   transform: scale(1.05);
 }
 
+.short-input {
+  max-width: 400px;
+  margin-bottom: 20px;
+}
+
+.custom-button-reverse {
+  background-color: #fff !important;
+  color: #000 !important;
+  border: 2px solid #000 !important;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+.custom-button-reverse:hover {
+  background-color: #000 !important;
+  color: #fff !important; 
+  border-color: #fff !important;
+}
+
+.section-photo-upload {
+  margin-top: 100px;
+  margin-bottom: 30px;
+}
+
+.profile-info-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.profile-info {
+  text-align: center;
+}
+
+.photo-card-button {
+  background-color: #fff !important;
+  color: #000 !important;
+  border: 2px solid #000 !important;
+  margin-left: auto;
+  transition: all 0.3s ease;
+  margin-left: 8px
+}
+
+.photo-card-button-delete {
+  background-color: #000 !important;
+  color: #fff !important;
+  border: 2px solid #000 !important;
+  margin-left: auto;
+  transition: all 0.3s ease;
+  margin-left: 8px
+}
+
+.photo-card-button:hover {
+  background-color: #000 !important;
+  color: #fff !important;
+  border-color: #fff !important;
+}
+
+/* Flex container for the card buttons */
+.card-button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}

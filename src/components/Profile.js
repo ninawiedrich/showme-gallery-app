@@ -109,58 +109,75 @@ const Profile = () => {
 
   return (
     <Container>
-      <h1>My Profile</h1>
-      {error && <Alert variant="danger">{error}</Alert>}
-      <Row>
-        <Col md={6}>
-          <Form>
-            <Form.Group controlId="photo-upload">
+      <Row className="profile-container">
+        <Col md={6} className="photo-upload-section">
+          {/* Photo upload section */}
+          <Form className="section-photo-upload">
+            <Form.Group controlId="photo-upload" className="short-input">
               <Form.Label>Upload New Photo</Form.Label>
               <Form.Control type="file" onChange={(e) => setPhotoFile(e.target.files[0])} />
             </Form.Group>
-            <Form.Group controlId="photo-tag">
+            <Form.Group controlId="photo-tag" className="short-input">
               <Form.Label>Tag</Form.Label>
               <Form.Control type="text" value={tag} onChange={(e) => setTag(e.target.value)} />
             </Form.Group>
-            <Form.Group controlId="photo-category">
+            <Form.Group controlId="photo-category" className="short-input">
               <Form.Label>Category</Form.Label>
               <Form.Control as="select" value={category} onChange={(e) => setCategory(e.target.value)}>
                 <option value="">Select a category</option>
                 <option value="Nature">Nature</option>
                 <option value="Animals">Animals</option>
                 <option value="People">People</option>
+                <option value="People">Technology</option>
               </Form.Control>
             </Form.Group>
-            <Button variant="primary" onClick={handlePhotoUpload}>Upload Photo</Button>
+            <Button className="custom-button-reverse" onClick={handlePhotoUpload}>Upload Photo</Button>
           </Form>
         </Col>
-        <Col md={6} className="text-center">
-          <Image
-            src={user.avatar || 'https://via.placeholder.com/150'}
-            alt="Profile Avatar"
-            roundedCircle
-            style={{ width: '150px', height: '150px', objectFit: 'cover' }}
-          />
-          <h2>{user.username || 'Your Name'}</h2>
-          <p>{user.bio || 'Your bio here'}</p>
-          <Button variant="primary" onClick={() => setShowModal(true)}>Edit Profile</Button>
+
+        <Col md={6} className="profile-info-section">
+          {/* Profile section */}
+          <div className="profile-info">
+            <Image
+              src={user.avatar || 'https://via.placeholder.com/150'}
+              alt="Profile Avatar"
+              roundedCircle
+              className="mb-3"
+              style={{ width: '150px', height: '150px', objectFit: 'cover' }}
+            />
+            <h2>{user.username || 'Your Name'}</h2>
+            <p>{user.bio || 'Your bio here'}</p>
+            <Button className="custom-button-reverse" onClick={() => setShowModal(true)}>Edit Profile</Button>
+          </div>
         </Col>
       </Row>
       <Row xs={1} md={3} className="g-4 mt-3">
+        {/* Mapping userPhotos to display photo cards */}
         {userPhotos.map(photo => (
-          <Col key={photo.id} className="mb-3">
-            <Card className="h-100">
-              <Card.Img variant="top" src={photo.url} onClick={() => openImageModal(photo.url)} style={{ height: '200px', objectFit: 'cover' }} />
-              <Card.Body>
-                <Card.Title>{photo.tag}</Card.Title>
-                <Button variant="secondary" onClick={() => togglePhotoShare(photo.id, photo.shared)}>
-                  {photo.shared ? "Unshare" : "Share"}
-                </Button>
-                <Button variant="danger" onClick={() => handleDeletePhoto(photo.id, photo.url)}>Delete</Button>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
+  <Col key={photo.id} className="mb-3">
+    <Card className="h-100">
+      <Card.Img variant="top" src={photo.url} onClick={() => openImageModal(photo.url)} style={{ height: '200px', objectFit: 'cover' }} />
+      <Card.Body>
+        <Card.Title>{photo.tag}</Card.Title>
+        {/* Container for the buttons */}
+        <div className="card-button-container">
+          <Button 
+            className="photo-card-button" 
+            onClick={() => togglePhotoShare(photo.id, photo.shared)}
+          >
+            {photo.shared ? "Unshare" : "Share"}
+          </Button>
+          <Button 
+            className="photo-card-button-delete"
+            onClick={() => handleDeletePhoto(photo.id, photo.url)}
+          >
+            Delete
+          </Button>
+        </div>
+      </Card.Body>
+    </Card>
+  </Col>
+))}
       </Row>
       <Modal show={showImageModal} onHide={() => setShowImageModal(false)} size="lg">
         <Modal.Body>

@@ -1,0 +1,43 @@
+.navbar {
+  background-color: #000;
+  border-bottom: 2px solid #fff;
+margin-bottom: 100px;
+}
+
+.navbar .navbar-brand {
+  font-family: 'Montserrat', sans-serif;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  color: #fff;
+}
+
+.navbar .navbar-brand .navbar-text {
+  font-size: 6rem; 
+  line-height: 100px; 
+  margin-left: 10px;
+  color: #fff;
+}
+
+.navbar .nav-link {
+  color: #fff; 
+  margin-right: 20px;
+}
+
+.navbar .navbar-light .navbar-toggler {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.navbar .button-logout {
+  background-color: #000;
+  color: #fff;
+  border: 2px solid #fff;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.navbar .button-logout:hover {
+  background-color: #fff;
+  color: #000;
+}

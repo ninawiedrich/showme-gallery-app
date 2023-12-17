@@ -8,6 +8,9 @@ const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+   const [isSignInHovered, setIsSignInHovered] = useState(false);
+  const [isGoogleHovered, setIsGoogleHovered] = useState(false);
+
   const { signIn, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
 
@@ -49,14 +52,34 @@ const SignIn = () => {
                   <Form.Label>Password</Form.Label>
                   <Form.Control type="password" autoComplete="current-password" required value={password} onChange={(e) => setPassword(e.target.value)} />
                 </Form.Group>
-                <Button className="w-100 mt-3" type="submit">
-                  Sign In
-                </Button>
+                <Button
+                className="w-100 mt-3"
+                type="submit"
+                onMouseEnter={() => setIsSignInHovered(true)}
+                onMouseLeave={() => setIsSignInHovered(false)}
+                style={{
+                  backgroundColor: isSignInHovered ? 'white' : 'black',
+                  color: isSignInHovered ? 'black' : 'white',
+                  borderColor: 'black'
+                }}
+              >
+                Sign In
+              </Button>
               </Form>
-              <Button className="w-100 mt-3" variant="outline-primary" onClick={handleGoogleSignIn}>
+              <Button
+                className="w-100 mt-3"
+                onMouseEnter={() => setIsGoogleHovered(true)}
+                onMouseLeave={() => setIsGoogleHovered(false)}
+                style={{
+                  backgroundColor: isGoogleHovered ? '#4285F4' : 'white',
+                  color: isGoogleHovered ? 'white' : '#4285F4',
+                  borderColor: '#4285F4'
+                }}
+                onClick={handleGoogleSignIn}
+              >
                 Sign In with Google
               </Button>
-              <div className="w-100 text-center mt-3">
+              <div className="w-100 text-center mt-3" >
                 Don't have an account? <Link to="/signup">Register here</Link>.
               </div>
             </Card.Body>
