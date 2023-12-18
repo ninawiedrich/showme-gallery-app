@@ -32,6 +32,7 @@
   width: 100%; 
   height: auto;
   object-fit: contain;
+  align-items: center;
 }
 
 .modal-dialog {
@@ -42,6 +43,22 @@
 .modal-content {
   overflow: auto;
 }
+
+.modal-header {
+  color: black;
+}
+
+.modal-body {
+  color: black;
+}
+
+.avatar-container {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically if needed */
+  margin-bottom: 15px; /* Optional: Adds some space below the avatar */
+}
+
 
 @media (max-width: 1024px) {
   .photo-frame {
