@@ -27,7 +27,7 @@ const Header = () => {
             width="100"
             height="100"
             className="d-inline-block align-top"
-            alt="Photo Gallery Logo"
+            alt="Logo"
           />
           <span className="navbar-text">Photo Gallery</span>
         </Navbar.Brand>
