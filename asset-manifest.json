@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/showme-gallery-app.git/static/css/main.a38dabf2.css",
-    "main.js": "/showme-gallery-app.git/static/js/main.923ba7b4.js",
-    "static/media/logo.png": "/showme-gallery-app.git/static/media/logo.ed1307f5772ba43a77ab.png",
-    "static/media/revicons.eot": "/showme-gallery-app.git/static/media/revicons.a77de540a38981833f9e.eot",
-    "static/media/revicons.ttf": "/showme-gallery-app.git/static/media/revicons.57fd05d4ae650374c8de.ttf",
-    "static/media/revicons.woff": "/showme-gallery-app.git/static/media/revicons.e8746a624ed098489406.woff",
-    "index.html": "/showme-gallery-app.git/index.html",
-    "main.a38dabf2.css.map": "/showme-gallery-app.git/static/css/main.a38dabf2.css.map",
-    "main.923ba7b4.js.map": "/showme-gallery-app.git/static/js/main.923ba7b4.js.map"
+    "main.css": "/showme-gallery-app/static/css/main.584433e9.css",
+    "main.js": "/showme-gallery-app/static/js/main.073a3f4c.js",
+    "static/media/logo.png": "/showme-gallery-app/static/media/logo.ed1307f5772ba43a77ab.png",
+    "static/media/revicons.eot": "/showme-gallery-app/static/media/revicons.a77de540a38981833f9e.eot",
+    "static/media/revicons.ttf": "/showme-gallery-app/static/media/revicons.57fd05d4ae650374c8de.ttf",
+    "static/media/revicons.woff": "/showme-gallery-app/static/media/revicons.e8746a624ed098489406.woff",
+    "index.html": "/showme-gallery-app/index.html",
+    "main.584433e9.css.map": "/showme-gallery-app/static/css/main.584433e9.css.map",
+    "main.073a3f4c.js.map": "/showme-gallery-app/static/js/main.073a3f4c.js.map"
   },
   "entrypoints": [
-    "static/css/main.a38dabf2.css",
-    "static/js/main.923ba7b4.js"
+    "static/css/main.584433e9.css",
+    "static/js/main.073a3f4c.js"
   ]
 }
