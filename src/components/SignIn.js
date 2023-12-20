@@ -19,7 +19,7 @@ const SignIn = () => {
     setError('');
     try {
       await signIn(email, password);
-      navigate('/profile'); // Redirect to the profile page upon successful sign-in
+      navigate('/profile');
     } catch (error) {
       console.error('SignIn Error:', error);
       setError('Failed to sign in');

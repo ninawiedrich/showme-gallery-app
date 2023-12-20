@@ -54,9 +54,9 @@
 
 .avatar-container {
   display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically if needed */
-  margin-bottom: 15px; /* Optional: Adds some space below the avatar */
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
 
