@@ -50,5 +50,5 @@ ShowMe Gallery is a dynamic web application that provides a platform for users t
 
 ## Further Help
 - **Live Deployment**: For more information, live demos, and usage examples, please visit the [ShowMe Gallery website](https://showme-gallery.netlify.app/).
-- **Feedback and Suggestions**: Open to feedback and improvements. Please reach out at nina.wiedrich@gmail.com(mailto:nina.wiedrich@gmail.com).
+- **Feedback and Suggestions**: Open to feedback and improvements. Please reach out at [nina.wiedrich@gmail.com](mailto:nina.wiedrich@gmail.com).
 - **Customize Configuration**: See [React Documentation](https://reactjs.org/docs/getting-started.html) for more details.
