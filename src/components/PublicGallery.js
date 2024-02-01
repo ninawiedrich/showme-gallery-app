@@ -81,6 +81,46 @@ const PublicGallery = () => {
         }
     };
 
+  const CustomLeftArrow = ({ onClick }) => (
+  <button
+    onClick={onClick}
+    style={{
+      position: 'absolute',
+      left: '10px',
+      zIndex: 2,
+      borderRadius: '50%',
+      background: 'rgba(0, 0, 0, 0.7)',
+      color: 'white',
+      fontSize: '32px', // Increase the font size for a bigger arrow
+      width: '60px', // Increase the width for a bigger arrow
+      height: '60px', // Increase the height for a bigger arrow
+    }}
+  >
+    &lt;
+  </button>
+);
+
+const CustomRightArrow = ({ onClick }) => (
+  <button
+    onClick={onClick}
+    style={{
+      position: 'absolute',
+      right: '10px', // Adjust the right position
+      zIndex: 2,
+      borderRadius: '50%',
+      background: 'rgba(0, 0, 0, 0.7)',
+      color: 'white',
+      fontSize: '32px', // Increase the font size for a bigger arrow
+      width: '60px', // Increase the width for a bigger arrow
+      height: '60px', // Increase the height for a bigger arrow
+    }}
+  >
+    &gt;
+  </button>
+);
+
+    
+
     return (
         <Container>
             <div className="gallery-header">
@@ -118,21 +158,23 @@ const PublicGallery = () => {
                 </Col>
             </Row>
             <div className="gallery-container">
-                <Carousel
-                    swipeable={true}
-                    draggable={true}
-                    showDots={true}
-                    responsive={responsive}
-                    ssr={true}
-                    infinite={true}
-                    autoPlay={false}
-                    keyBoardControl={true}
-                    customTransition="all .5"
-                    transitionDuration={500}
-                    containerClass="carousel-container"
-                    removeArrowOnDeviceType={["tablet", "mobile"]}
-                    itemClass="carousel-item-padding-40-px"
-                >
+            <Carousel
+  swipeable={true}
+  draggable={true}
+  showDots={true}
+  responsive={responsive}
+  ssr={true}
+  infinite={true}
+  autoPlay={false}
+  keyBoardControl={true}
+  customTransition="all .5"
+  transitionDuration={500}
+  containerClass="carousel-container"
+  removeArrowOnDeviceType={["tablet", "mobile"]}
+  itemClass="carousel-item-padding-40-px"
+  customLeftArrow={<CustomLeftArrow />}
+  customRightArrow={<CustomRightArrow />}
+>
                     {filteredPhotos.map((photo) => (
                         <div key={photo.id} className="photo-container" onClick={() => openImageModal(photo)}>
                             <img

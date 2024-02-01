@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Modal, Image, Alert, Button, Form } from 'react-bootstrap';
 import { storage, db, auth } from '../firebase-config';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
-import { doc, getDoc, updateDoc, collection, addDoc, query, where, onSnapshot, deleteDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, collection, addDoc, query, where, onSnapshot, deleteDoc, setDoc } from 'firebase/firestore';
 import Resizer from 'react-image-file-resizer';
 import './Profile.css';
 
@@ -37,13 +37,22 @@ const Profile = () => {
 
   const handleProfileUpdate = async (updatedUser) => {
     const userDocRef = doc(db, 'users', auth.currentUser.uid);
-    if (updatedUser.avatar) {
+  
+    // Handle avatar upload if there is a new avatar file
+    if (updatedUser.avatar instanceof File) {
       const avatarRef = ref(storage, `avatars/${auth.currentUser.uid}/${updatedUser.avatar.name}`);
       const snapshot = await uploadBytes(avatarRef, updatedUser.avatar);
       updatedUser.avatar = await getDownloadURL(snapshot.ref);
     }
-
-    await updateDoc(userDocRef, updatedUser);
+  
+    // Check if the user document exists and create it if not, otherwise update
+    const docSnap = await getDoc(userDocRef);
+    if (!docSnap.exists()) {
+      await setDoc(userDocRef, updatedUser);
+    } else {
+      await updateDoc(userDocRef, updatedUser);
+    }
+  
     setUser(prevState => ({ ...prevState, ...updatedUser }));
     setShowModal(false);
   };

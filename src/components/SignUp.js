@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Card, Form, Button, Alert, Container, Row, Col } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../useAuth';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '../firebase-config';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
@@ -15,8 +17,13 @@ const SignUp = () => {
     event.preventDefault();
     setError('');
     try {
-      await signUp(email, password);
-      navigate('/');
+      const userCredential = await signUp(email, password);
+      // Create a user profile document in Firestore
+      await setDoc(doc(db, 'users', userCredential.user.uid), {
+        email: email,
+        // Add any other initial fields here
+      });
+      navigate('/profile'); // Redirect to profile page after sign up
     } catch (error) {
       console.error('SignUp Error:', error);
       setError('Failed to sign up');
